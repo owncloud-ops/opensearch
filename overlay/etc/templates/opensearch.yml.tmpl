@@ -1,0 +1,84 @@
+cluster:
+  name: {{ getenv "OPENSEARCH_CLUSTER_NAME" "opensearch" }}
+  {{- if and (getenv "OPENSEARCH_CLUSTER_MODE" "false" | conv.ToBool) (getenv "OPENSEARCH_CLUSTER_INIT" "false" | conv.ToBool) }}
+  initial_master_nodes:
+    {{- range (getenv "OPENSEARCH_INITIAL_MASTER_NODES" "elastic-node1" | strings.Split ",") }}
+    - {{ . | strings.TrimSpace }}
+    {{- end }}
+  {{- end }}
+  routing:
+    allocation:
+      disk:
+          threshold_enabled: false
+
+node:
+  name: {{ getenv "OPENSEARCH_NODE_NAME" "elastic-node1" }}
+  roles:
+    {{- if (getenv "OPENSEARCH_NODE_MASTER" "true" | conv.ToBool) }}
+    - master
+    {{- end }}
+    {{- if (getenv "OPENSEARCH_NODE_DATA" "true" | conv.ToBool) }}
+    - data
+    {{- end }}
+    {{- if (getenv "OPENSEARCH_NODE_INGEST" "true" | conv.ToBool) }}
+    - ingest
+    {{- end }}
+
+discovery:
+  {{- if not (getenv "OPENSEARCH_CLUSTER_MODE" "false" | conv.ToBool) }}
+  type: single-node
+  {{- else }}
+  seed_hosts:
+  {{- range (getenv "OPENSEARCH_DISCOVERY_SEED_HOSTS" "elastic-node1" | strings.Split ",") }}
+  - {{ . | strings.TrimSpace }}
+  {{- end }}
+  {{- end }}
+
+network:
+  host: {{ getenv "OPENSEARCH_NETWORK_HOST" "0.0.0.0" }}
+  {{- if (getenv "OPENSEARCH_NETWORK_PUBLISH_HOST") }}
+  publish_host: {{ getenv "OPENSEARCH_NETWORK_PUBLISH_HOST" }}
+  {{- end }}
+
+path:
+  data: /usr/share/opensearch/data
+  logs: /usr/share/opensearch/logs
+  repo:
+    - /usr/share/opensearch/backup
+
+bootstrap:
+  memory_lock: {{ getenv "OPENSEARCH_BOOTSTRAP_MEMORY_LOCK" "true" | conv.ToBool }}
+
+http:
+  port: {{ getenv "OPENSEARCH_HTTP_PORT" "9200" }}
+  compression: {{ getenv "OPENSEARCH_HTTP_COMPRESSION" "true" | conv.ToBool }}
+
+{{- if (getenv "OPENSEARCH_PLUGINS_SECURITY_ENABLED" "false" | conv.ToBool) }}
+plugins:
+  security:
+    ssl:
+      transport:
+        enabled: {{ getenv "OPENSEARCH_PLUGINS_SECURITY_SSL_TRANSPORT_ENABLED" "false" | conv.ToBool }}
+        {{- if (getenv "OPENSEARCH_PLUGINS_SECURITY_SSL_TRANSPORT_ENABLED" "false" | conv.ToBool) }}
+        verification_mode: certificate
+        enforce_hostname_verification: true
+        pemkey_filepath: {{ getenv "OPENSEARCH_PLUGINS_SECURITY_SSL_TRANSPORT_KEY" "node-key.pem" }}
+        pemcert_filepath: {{ getenv "OPENSEARCH_PLUGINS_SECURITY_SSL_TRANSPORT_CERTIFICATE" "node.pem" }}
+        {{- if (getenv "OPENSEARCH_PLUGINS_SECURITY_SSL_TRANSPORT_CERTIFICATE_AUTHORITIES" | conv.ToBool) }}
+        pemtrustedcas_filepath: {{ getenv "OPENSEARCH_PLUGINS_SECURITY_SSL_TRANSPORT_CERTIFICATE_AUTHORITIES" }}
+        {{- end }}
+        {{- end }}
+      http:
+        enabled: {{ getenv "OPENSEARCH_PLUGINS_SECURITY_HTTP_SSL_ENABLED" "false" | conv.ToBool }}
+        {{- if (getenv "OPENSEARCH_PLUGINS_SECURITY_HTTP_SSL_ENABLED" "false" | conv.ToBool) }}
+        pemkey_filepath: {{ getenv "OPENSEARCH_PLUGINS_SECURITY_HTTP_SSL_KEY" "node-key.pem" }}
+        pemcert_filepath: {{ getenv "OPENSEARCH_PLUGINS_SECURITY_HTTP_SSL_CERTIFICATE" "node.pem" }}
+        {{- if (getenv "OPENSEARCH_PLUGINS_SECURITY_HTTP_SSL_CERTIFICATE_AUTHORITIES" | conv.ToBool) }}
+        pemtrustedcas_filepath: {{ getenv "OPENSEARCH_PLUGINS_SECURITY_HTTP_SSL_CERTIFICATE_AUTHORITIES" }}
+        {{- end }}
+        {{- end }}
+{{- else }}
+plugins:
+  security:
+    disabled: true
+{{- end }}

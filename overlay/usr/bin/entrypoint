@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+
+set -eo pipefail
+
+# shellcheck disable=SC1091
+source /usr/local/lib/log.sh
+
+/usr/local/bin/gomplate -o /usr/share/opensearch/config/opensearch.yml -f /etc/templates/opensearch.yml.tmpl
+/usr/local/bin/gomplate -o /usr/share/opensearch/config/jvm.options -f /etc/templates/jvm.options.tmpl
+/usr/local/bin/gomplate -o /usr/share/opensearch/config/log4j2.properties -f /etc/templates/log4j2.properties.tmpl
+
+chmod 0660 /usr/share/opensearch/config/opensearch.yml
+chmod 0660 /usr/share/opensearch/config/jvm.options
+chmod 0660 /usr/share/opensearch/config/log4j2.properties
+
+if [ -n "$OPENSEARCH_S3_CLIENT_DEFAULT_ACCESS_KEY" ] && [ -n "$OPENSEARCH_S3_CLIENT_DEFAULT_SECRET_KEY" ]; then
+    log_info "Add S3 secrets to keystore"
+    echo "$OPENSEARCH_S3_CLIENT_DEFAULT_ACCESS_KEY" | /usr/share/opensearch/bin/opensearch-keystore add -f -s -x s3.client.default.access_key
+    echo "$OPENSEARCH_S3_CLIENT_DEFAULT_SECRET_KEY" | /usr/share/opensearch/bin/opensearch-keystore add -f -s -x s3.client.default.secret_key
+    log_info "Upgrade keystore"
+    /usr/share/opensearch/bin/opensearch-keystore upgrade
+fi
+
+if [ "$OPENSEARCH_PLUGINS_SECURITY_ENABLED" != "true" ]; then
+    log_warn "Security plugin is disabled, don't use it in production"
+fi
+
+log_info "Start OpenSearch\n"
+exec env DISABLE_INSTALL_DEMO_CONFIG=true /usr/share/opensearch/opensearch-docker-entrypoint.sh
