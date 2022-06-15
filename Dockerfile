@@ -1,6 +1,6 @@
 FROM opensearchproject/opensearch:2.0.0@sha256:4f49474dcb7345af0afe976221c1885dce2ceb7093516538b08cdd3bdfc33f20
 
-LABEL maintainer="ownCloud GmbH"
+LABEL intainer="ownCloud GmbH"
 LABEL org.opencontainers.image.authors="ownCloud GmbH"
 LABEL org.opencontainers.image.title="OpenSearch"
 LABEL org.opencontainers.image.url="https://github.com/owncloud-ops/opensearch"
@@ -37,5 +37,5 @@ USER 1000
 
 WORKDIR /usr/share/opensearch
 ENTRYPOINT ["/usr/bin/entrypoint"]
-HEALTHCHECK --interval=30s --timeout=5s --retries=3 CMD /usr/bin/healthcheck
+HEALTHCHECK --interval=15s --timeout=5s --retries=5 CMD /usr/bin/healthcheck
 CMD []

@@ -13,6 +13,12 @@ chmod 0660 /usr/share/opensearch/config/opensearch.yml
 chmod 0660 /usr/share/opensearch/config/jvm.options
 chmod 0660 /usr/share/opensearch/config/log4j2.properties
 
+ADMIN_ENABLED=$(/usr/local/bin/gomplate -i '{{ getenv "OPENSEARCH_ADMIN_ENABLED" "true" | conv.ToBool }}')
+if [ "$ADMIN_ENABLED" == true ]; then
+    /usr/local/bin/gomplate -o /usr/share/opensearch/config/opensearch-security/internal_users.yml -f /etc/templates/internal_users.yml.tmpl
+    chmod 0600 /usr/share/opensearch/config/opensearch-security/internal_users.yml
+fi
+
 if [ -n "$OPENSEARCH_S3_CLIENT_DEFAULT_ACCESS_KEY" ] && [ -n "$OPENSEARCH_S3_CLIENT_DEFAULT_SECRET_KEY" ]; then
     log_info "Add S3 secrets to keystore"
     echo "$OPENSEARCH_S3_CLIENT_DEFAULT_ACCESS_KEY" | /usr/share/opensearch/bin/opensearch-keystore add -f -s -x s3.client.default.access_key
@@ -21,7 +27,8 @@ if [ -n "$OPENSEARCH_S3_CLIENT_DEFAULT_ACCESS_KEY" ] && [ -n "$OPENSEARCH_S3_CLI
     /usr/share/opensearch/bin/opensearch-keystore upgrade
 fi
 
-if [ "$OPENSEARCH_PLUGINS_SECURITY_ENABLED" != "true" ]; then
+PLUGINS_SECURITY_ENABLED=$(/usr/local/bin/gomplate -i '{{ getenv "OPENSEARCH_PLUGINS_SECURITY_ENABLED" "false" | conv.ToBool }}')
+if [ "$PLUGINS_SECURITY_ENABLED" != true ]; then
     log_warn "Security plugin is disabled, don't use it in production"
 fi
 

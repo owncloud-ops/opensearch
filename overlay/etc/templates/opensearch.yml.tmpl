@@ -2,7 +2,7 @@ cluster:
   name: {{ getenv "OPENSEARCH_CLUSTER_NAME" "opensearch" }}
   {{- if and (getenv "OPENSEARCH_CLUSTER_MODE" "false" | conv.ToBool) (getenv "OPENSEARCH_CLUSTER_INIT" "false" | conv.ToBool) }}
   initial_master_nodes:
-    {{- range (getenv "OPENSEARCH_INITIAL_MASTER_NODES" "elastic-node1" | strings.Split ",") }}
+    {{- range (getenv "OPENSEARCH_INITIAL_MASTER_NODES" "opensearch-node1" | strings.Split ",") }}
     - {{ . | strings.TrimSpace }}
     {{- end }}
   {{- end }}
@@ -12,7 +12,7 @@ cluster:
           threshold_enabled: false
 
 node:
-  name: {{ getenv "OPENSEARCH_NODE_NAME" "elastic-node1" }}
+  name: {{ getenv "OPENSEARCH_NODE_NAME" "opensearch-node1" }}
   roles:
     {{- if (getenv "OPENSEARCH_NODE_MASTER" "true" | conv.ToBool) }}
     - master
@@ -29,7 +29,7 @@ discovery:
   type: single-node
   {{- else }}
   seed_hosts:
-  {{- range (getenv "OPENSEARCH_DISCOVERY_SEED_HOSTS" "elastic-node1" | strings.Split ",") }}
+  {{- range (getenv "OPENSEARCH_DISCOVERY_SEED_HOSTS" "opensearch-node1" | strings.Split ",") }}
   - {{ . | strings.TrimSpace }}
   {{- end }}
   {{- end }}
@@ -56,15 +56,18 @@ http:
 {{- if (getenv "OPENSEARCH_PLUGINS_SECURITY_ENABLED" "false" | conv.ToBool) }}
 plugins:
   security:
+    allow_default_init_securityindex: true
+    compliance:
+      salt: {{ getenv "OPENSEARCH_PLUGINS_SECURITY_COMPLIANCE_SALT" (random.AlphaNum 16) }}
     ssl:
       transport:
         enabled: {{ getenv "OPENSEARCH_PLUGINS_SECURITY_SSL_TRANSPORT_ENABLED" "false" | conv.ToBool }}
         {{- if (getenv "OPENSEARCH_PLUGINS_SECURITY_SSL_TRANSPORT_ENABLED" "false" | conv.ToBool) }}
-        verification_mode: certificate
         enforce_hostname_verification: true
+        resolve_hostname: true
         pemkey_filepath: {{ getenv "OPENSEARCH_PLUGINS_SECURITY_SSL_TRANSPORT_KEY" "node-key.pem" }}
         pemcert_filepath: {{ getenv "OPENSEARCH_PLUGINS_SECURITY_SSL_TRANSPORT_CERTIFICATE" "node.pem" }}
-        {{- if (getenv "OPENSEARCH_PLUGINS_SECURITY_SSL_TRANSPORT_CERTIFICATE_AUTHORITIES" | conv.ToBool) }}
+        {{- if (getenv "OPENSEARCH_PLUGINS_SECURITY_SSL_TRANSPORT_CERTIFICATE_AUTHORITIES") }}
         pemtrustedcas_filepath: {{ getenv "OPENSEARCH_PLUGINS_SECURITY_SSL_TRANSPORT_CERTIFICATE_AUTHORITIES" }}
         {{- end }}
         {{- end }}
@@ -73,7 +76,7 @@ plugins:
         {{- if (getenv "OPENSEARCH_PLUGINS_SECURITY_HTTP_SSL_ENABLED" "false" | conv.ToBool) }}
         pemkey_filepath: {{ getenv "OPENSEARCH_PLUGINS_SECURITY_HTTP_SSL_KEY" "node-key.pem" }}
         pemcert_filepath: {{ getenv "OPENSEARCH_PLUGINS_SECURITY_HTTP_SSL_CERTIFICATE" "node.pem" }}
-        {{- if (getenv "OPENSEARCH_PLUGINS_SECURITY_HTTP_SSL_CERTIFICATE_AUTHORITIES" | conv.ToBool) }}
+        {{- if (getenv "OPENSEARCH_PLUGINS_SECURITY_HTTP_SSL_CERTIFICATE_AUTHORITIES") }}
         pemtrustedcas_filepath: {{ getenv "OPENSEARCH_PLUGINS_SECURITY_HTTP_SSL_CERTIFICATE_AUTHORITIES" }}
         {{- end }}
         {{- end }}

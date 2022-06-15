@@ -2,10 +2,15 @@
 
 set -eo pipefail
 
-[ "$OPENSEARCH_PLUGINS_SECURITY_HTTP_SSL_ENABLED" == "true" ] && URL_SCHEME=https
+HTTP_SSL_ENABLED=$(/usr/local/bin/gomplate -i '{{ getenv "OPENSEARCH_PLUGINS_SECURITY_HTTP_SSL_ENABLED" "false" | conv.ToBool }}')
+[ "$HTTP_SSL_ENABLED" == true ] && URL_SCHEME=https
+
+ADMIN_ENABLED=$(/usr/local/bin/gomplate -i '{{ getenv "OPENSEARCH_ADMIN_ENABLED" "true" | conv.ToBool }}')
+[ "$ADMIN_ENABLED" == true ] && AUTH_OPTIONS="-u ${OPENSEARCH_ADMIN_USER:-opensearch}:${OPENSEARCH_ADMIN_PASSWORD:-opensearch}"
 
 URL="${URL_SCHEME:-http}://127.0.0.1:9200/"
-CHECK=$(curl -sk -o /dev/null -w "%{http_code}" "$URL" -u elastic:"$OPENSEARCH_PASSWORD")
+# shellcheck disable=SC2086
+CHECK=$(curl -sk -o /dev/null -w "%{http_code}" "$URL" $AUTH_OPTIONS)
 
 [ "$CHECK" -ne 200 ] && exit 1
 
