@@ -67,18 +67,14 @@ plugins:
         resolve_hostname: true
         pemkey_filepath: {{ getenv "OPENSEARCH_PLUGINS_SECURITY_SSL_TRANSPORT_KEY" "node-key.pem" }}
         pemcert_filepath: {{ getenv "OPENSEARCH_PLUGINS_SECURITY_SSL_TRANSPORT_CERTIFICATE" "node.pem" }}
-        {{- if (getenv "OPENSEARCH_PLUGINS_SECURITY_SSL_TRANSPORT_CERTIFICATE_AUTHORITIES") }}
-        pemtrustedcas_filepath: {{ getenv "OPENSEARCH_PLUGINS_SECURITY_SSL_TRANSPORT_CERTIFICATE_AUTHORITIES" }}
-        {{- end }}
+        pemtrustedcas_filepath: {{ getenv "OPENSEARCH_PLUGINS_SECURITY_SSL_TRANSPORT_CERTIFICATE_AUTHORITIES" "ca-bundle.trust.crt" }}
         {{- end }}
       http:
         enabled: {{ getenv "OPENSEARCH_PLUGINS_SECURITY_HTTP_SSL_ENABLED" "false" | conv.ToBool }}
         {{- if (getenv "OPENSEARCH_PLUGINS_SECURITY_HTTP_SSL_ENABLED" "false" | conv.ToBool) }}
         pemkey_filepath: {{ getenv "OPENSEARCH_PLUGINS_SECURITY_HTTP_SSL_KEY" "node-key.pem" }}
         pemcert_filepath: {{ getenv "OPENSEARCH_PLUGINS_SECURITY_HTTP_SSL_CERTIFICATE" "node.pem" }}
-        {{- if (getenv "OPENSEARCH_PLUGINS_SECURITY_HTTP_SSL_CERTIFICATE_AUTHORITIES") }}
-        pemtrustedcas_filepath: {{ getenv "OPENSEARCH_PLUGINS_SECURITY_HTTP_SSL_CERTIFICATE_AUTHORITIES" }}
-        {{- end }}
+        pemtrustedcas_filepath: {{ getenv "OPENSEARCH_PLUGINS_SECURITY_HTTP_SSL_CERTIFICATE_AUTHORITIES" "ca-bundle.trust.crt" }}
         {{- end }}
 {{- else }}
 plugins:
