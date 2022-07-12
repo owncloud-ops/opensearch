@@ -57,6 +57,11 @@ http:
 plugins:
   security:
     allow_default_init_securityindex: true
+    restapi:
+      roles_enabled:
+        {{- range split (getenv "OPENSEARCH_PLUGINS_SECURITY_RESTAPI_ROLES_ENABLED" "all_access,security_rest_api_access") "," }}
+        - {{- . | strings.TrimSpace -}}
+        {{- end }}
     compliance:
       salt: {{ getenv "OPENSEARCH_PLUGINS_SECURITY_COMPLIANCE_SALT" (random.AlphaNum 16) }}
     ssl:
