@@ -68,8 +68,8 @@ plugins:
       transport:
         enabled: {{ getenv "OPENSEARCH_PLUGINS_SECURITY_SSL_TRANSPORT_ENABLED" "false" | conv.ToBool }}
         {{- if (getenv "OPENSEARCH_PLUGINS_SECURITY_SSL_TRANSPORT_ENABLED" "false" | conv.ToBool) }}
-        enforce_hostname_verification: true
-        resolve_hostname: true
+        enforce_hostname_verification: {{ getenv "OPENSEARCH_PLUGINS_SECURITY_SSL_TRANSPORT_HOSTNAME_VERIFICATION" "false" | conv.ToBool }}
+        resolve_hostname: {{ getenv "OPENSEARCH_PLUGINS_SECURITY_SSL_TRANSPORT_HOSTNAME_VERIFICATION" "false" | conv.ToBool }}
         pemkey_filepath: {{ getenv "OPENSEARCH_PLUGINS_SECURITY_SSL_TRANSPORT_KEY" "node-key.pem" }}
         pemcert_filepath: {{ getenv "OPENSEARCH_PLUGINS_SECURITY_SSL_TRANSPORT_CERTIFICATE" "node.pem" }}
         pemtrustedcas_filepath: {{ getenv "OPENSEARCH_PLUGINS_SECURITY_SSL_TRANSPORT_CERTIFICATE_AUTHORITIES" "ca-bundle.trust.crt" }}
