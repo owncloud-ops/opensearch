@@ -9,13 +9,13 @@ cluster:
   routing:
     allocation:
       disk:
-          threshold_enabled: false
+        threshold_enabled: false
 
 node:
   name: {{ getenv "OPENSEARCH_NODE_NAME" "opensearch-node1" }}
   roles:
-    {{- if (getenv "OPENSEARCH_NODE_MASTER" "true" | conv.ToBool) }}
-    - master
+    {{- if (getenv "OPENSEARCH_NODE_MANAGER" "true" | conv.ToBool) }}
+    - cluster_manager
     {{- end }}
     {{- if (getenv "OPENSEARCH_NODE_DATA" "true" | conv.ToBool) }}
     - data
