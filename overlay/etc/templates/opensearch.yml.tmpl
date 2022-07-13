@@ -81,6 +81,12 @@ plugins:
         pemcert_filepath: {{ getenv "OPENSEARCH_PLUGINS_SECURITY_HTTP_SSL_CERTIFICATE" "node.pem" }}
         pemtrustedcas_filepath: {{ getenv "OPENSEARCH_PLUGINS_SECURITY_HTTP_SSL_CERTIFICATE_AUTHORITIES" "ca-bundle.trust.crt" }}
         {{- end }}
+    {{- if (getenv "OPENSEARCH_PLUGINS_SECURITY_NODES_DN") }}
+    nodes_dn:
+      {{- range split (getenv "OPENSEARCH_PLUGINS_SECURITY_NODES_DN") "," }}
+      - '{{ . | strings.TrimSpace -}}'
+      {{- end }}
+    {{- end }}
 {{- else }}
 plugins:
   security:
