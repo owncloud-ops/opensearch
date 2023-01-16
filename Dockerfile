@@ -1,4 +1,4 @@
-FROM opensearchproject/opensearch:2.3.0
+FROM opensearchproject/opensearch:2.3.0@sha256:ed2f42861daedd95d7c52ac67b88bec40904d31bd55ff730d5158db8d0cb3f33
 
 LABEL maintainer="ownCloud GmbH"
 LABEL org.opencontainers.image.authors="ownCloud GmbH"
