@@ -1,4 +1,4 @@
-FROM opensearchproject/opensearch:2.4.1@sha256:cf80040045595329691a966fe47dedc49dacd262260855dcb768ffce297abed2
+FROM opensearchproject/opensearch:2.6.0@sha256:18b0a55c3fd1d76833e72f1214d633e1dc7641f85b22d3045f17cfe6a113317f
 
 LABEL maintainer="ownCloud GmbH"
 LABEL org.opencontainers.image.authors="ownCloud GmbH"
