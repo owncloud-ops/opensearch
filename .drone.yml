@@ -52,7 +52,7 @@ steps:
   depends_on:
       - dryrun
 
-- name: publish-dockerhub
+- name: publish-quay
   image: docker.io/plugins/docker
   settings:
     build_args:
