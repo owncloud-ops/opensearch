@@ -2,6 +2,7 @@
 
 [![Build Status](https://drone.owncloud.com/api/badges/owncloud-ops/opensearch/status.svg)](https://drone.owncloud.com/owncloud-ops/opensearch/)
 [![Docker Hub](https://img.shields.io/badge/docker-latest-blue.svg?logo=docker&logoColor=white)](https://hub.docker.com/r/owncloudops/opensearch)
+[![Quay.io](https://img.shields.io/badge/quay-latest-blue.svg?logo=docker&logoColor=white)](https://quay.io/repository/owncloudops/opensearch)
 
 Custom container image for [OpenSearch](https://github.com/opensearch/opensearch/).
 
