@@ -6,6 +6,7 @@ cluster:
     - {{ . | strings.TrimSpace }}
     {{- end }}
   {{- end }}
+  default_number_of_replicas: {{ getenv "OPENSEARCH_DEFAULT_NUMBER_OF_REPLICAS" "1" }}
   routing:
     allocation:
       disk:
