@@ -47,6 +47,8 @@ OPENSEARCH_BOOTSTRAP_MEMORY_LOCK=true
 OPENSEARCH_HTTP_PORT=9200
 OPENSEARCH_HTTP_COMPRESSION=true
 
+OPENSEARCH_DEFAULT_NUMBER_OF_REPLICAS=1
+
 OPENSEARCH_PLUGINS_SECURITY_ENABLED=false
 # If you enable securoty on a production mode cluster, transport ssl is mandatory
 # and need to be configured.
@@ -82,7 +84,9 @@ OPENSEARCH_JVM_EXTRA_OPTS=
 ## Build
 
 ```Shell
-docker build -f Dockerfile -t opensearch:latest .
+docker build -f Dockerfile -t opensearch:latest . \
+    --build-arg OPENSEARCH_PLUGINS_INSTALL="repository-s3 ingest-attachment" \
+    --build-arg OPENSEARCH_PLUGINS_REMOVE="opensearch-security-analytics opensearch-ml"
 ```
 
 ## License
