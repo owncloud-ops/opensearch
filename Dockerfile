@@ -1,4 +1,4 @@
-FROM docker.io/opensearchproject/opensearch:2.9.0@sha256:6d1155e3913305e208a9e190afc8643bec71047242c366a6dbfe4219eafc5ea0
+FROM docker.io/opensearchproject/opensearch:2.10.0@sha256:c8f3ebd2a9340acbed0df8b7ba057dd013df829c5385fb03f4053473bdd8c1b6
 
 LABEL maintainer="ownCloud GmbH"
 LABEL org.opencontainers.image.authors="ownCloud GmbH"
@@ -21,7 +21,7 @@ ADD overlay/ /
 
 USER 0
 
-RUN yum install -y wget curl && \
+RUN yum install -y wget curl-minimal && \
     curl -SsfL -o /usr/local/bin/gomplate "https://github.com/hairyhenderson/gomplate/releases/download/${GOMPLATE_VERSION}/gomplate_linux-amd64" && \
     curl -SsfL "https://github.com/owncloud-ops/container-library/releases/download/${CONTAINER_LIBRARY_VERSION}/container-library.tar.gz" | tar xz -C / && \
     chmod 755 /usr/local/bin/gomplate && \
