@@ -86,7 +86,7 @@ OPENSEARCH_JVM_EXTRA_OPTS=
 ```Shell
 docker build -f Dockerfile -t opensearch:latest . \
     --build-arg OPENSEARCH_PLUGINS_INSTALL="repository-s3 ingest-attachment" \
-    --build-arg OPENSEARCH_PLUGINS_REMOVE="opensearch-security-analytics opensearch-ml"
+    --build-arg OPENSEARCH_PLUGINS_REMOVE="opensearch-security-analytics opensearch-ml opensearch-sql opensearch-neural-search"
 ```
 
 ## License

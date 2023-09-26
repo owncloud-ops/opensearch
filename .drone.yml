@@ -20,7 +20,7 @@ steps:
     settings:
       build_args:
         - OPENSEARCH_PLUGINS_INSTALL=repository-s3 ingest-attachment
-        - OPENSEARCH_PLUGINS_REMOVE=opensearch-security-analytics opensearch-ml
+        - OPENSEARCH_PLUGINS_REMOVE=opensearch-security-analytics opensearch-ml opensearch-sql opensearch-neural-search
       dockerfile: Dockerfile
       dry_run: true
       repo: owncloudops/${DRONE_REPO_NAME}
