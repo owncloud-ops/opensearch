@@ -30,7 +30,7 @@ RUN yum install -y wget curl-minimal && \
     chmod 755 /usr/share/opensearch/backup && \
     chown -R opensearch:root /usr/share/opensearch/config && \
     chmod 750 /usr/share/opensearch/config && \
-    ln -s /etc/ssl/certs/ca-bundle.trust.crt /usr/share/opensearch/config/ca-bundle.trust.crt && \
+    ln -s /etc/pki/ca-trust/extracted/openssl/ca-bundle.trust.crt /usr/share/opensearch/config/ca-bundle.trust.crt && \
     for PLUGIN in ${OPENSEARCH_PLUGINS_INSTALL}; do /usr/share/opensearch/bin/opensearch-plugin install -s -b "${PLUGIN}" || exit 1; done && \
     for PLUGIN in ${OPENSEARCH_PLUGINS_REMOVE}; do /usr/share/opensearch/bin/opensearch-plugin remove -s -p "${PLUGIN}" || exit 1; done && \
     yum clean all && \
