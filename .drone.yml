@@ -30,6 +30,7 @@ steps:
       TRIVY_SEVERITY: HIGH,CRITICAL
       TRIVY_TIMEOUT: 1m
       TRIVY_FORMAT: json
+      TRIVY_IGNOREFILE: .trivyignore.yaml
       TRIVY_SKIP_FILES: /usr/local/bin/gomplate
       TRIVY_SKIP_DIRS: /usr/share/opensearch
     depends_on:
