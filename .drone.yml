@@ -51,6 +51,7 @@ steps:
         - OPENSEARCH_PLUGINS_INSTALL=repository-s3 ingest-attachment
         - OPENSEARCH_PLUGINS_REMOVE=opensearch-security-analytics opensearch-ml
       dockerfile: Dockerfile
+      auto_tag: True
       password:
         from_secret: docker_password
       repo: owncloudops/${DRONE_REPO_NAME}
@@ -70,6 +71,7 @@ steps:
         - OPENSEARCH_PLUGINS_INSTALL=repository-s3 ingest-attachment
         - OPENSEARCH_PLUGINS_REMOVE=opensearch-security-analytics opensearch-ml
       dockerfile: Dockerfile
+      auto_tag: True
       password:
         from_secret: quay_password
       registry: quay.io
