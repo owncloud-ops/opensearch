@@ -9,7 +9,7 @@ platform:
 
 steps:
   - name: security-build
-    image: docker.io/owncloudci/drone-docker-buildx:2
+    image: docker.io/owncloudci/drone-docker-buildx:3
     settings:
       build_args:
         - OPENSEARCH_PLUGINS_INSTALL=repository-s3 ingest-attachment
@@ -45,7 +45,7 @@ steps:
       - security-scan
 
   - name: publish-dockerhub
-    image: docker.io/owncloudci/drone-docker-buildx:2
+    image: docker.io/owncloudci/drone-docker-buildx:3
     settings:
       build_args:
         - OPENSEARCH_PLUGINS_INSTALL=repository-s3 ingest-attachment
@@ -65,7 +65,7 @@ steps:
       - changelog
 
   - name: publish-quay
-    image: docker.io/owncloudci/drone-docker-buildx:2
+    image: docker.io/owncloudci/drone-docker-buildx:3
     settings:
       build_args:
         - OPENSEARCH_PLUGINS_INSTALL=repository-s3 ingest-attachment
