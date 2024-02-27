@@ -13,7 +13,7 @@ steps:
     settings:
       build_args:
         - OPENSEARCH_PLUGINS_INSTALL=repository-s3 ingest-attachment
-        - OPENSEARCH_PLUGINS_REMOVE=opensearch-security-analytics opensearch-ml opensearch-sql opensearch-neural-search
+        - OPENSEARCH_PLUGINS_REMOVE=opensearch-security-analytics opensearch-skills opensearch-ml opensearch-sql opensearch-neural-search
       dockerfile: Dockerfile
       output: type=oci,dest=oci/${DRONE_REPO_NAME},tar=false
       repo: owncloudops/${DRONE_REPO_NAME}
@@ -49,7 +49,7 @@ steps:
     settings:
       build_args:
         - OPENSEARCH_PLUGINS_INSTALL=repository-s3 ingest-attachment
-        - OPENSEARCH_PLUGINS_REMOVE=opensearch-security-analytics opensearch-ml
+        - OPENSEARCH_PLUGINS_REMOVE=opensearch-security-analytics opensearch-skills opensearch-ml opensearch-sql opensearch-neural-search
       dockerfile: Dockerfile
       auto_tag: True
       password:
@@ -69,7 +69,7 @@ steps:
     settings:
       build_args:
         - OPENSEARCH_PLUGINS_INSTALL=repository-s3 ingest-attachment
-        - OPENSEARCH_PLUGINS_REMOVE=opensearch-security-analytics opensearch-ml
+        - OPENSEARCH_PLUGINS_REMOVE=opensearch-security-analytics opensearch-skills opensearch-ml opensearch-sql opensearch-neural-search
       dockerfile: Dockerfile
       auto_tag: True
       password:
