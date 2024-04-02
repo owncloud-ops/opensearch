@@ -1,4 +1,4 @@
-FROM docker.io/opensearchproject/opensearch:2.12.0@sha256:645d3d9390ade7ebef988d3c9bc61a6616f1863ff41efe97e2347d6bf7972504
+FROM docker.io/opensearchproject/opensearch:2.13.0@sha256:b58f7e5e49f3d5f570899f90a39d11cb282212862241365cda5fe8d9760bed53
 
 LABEL maintainer="ownCloud GmbH"
 LABEL org.opencontainers.image.authors="ownCloud GmbH"
