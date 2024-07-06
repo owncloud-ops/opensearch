@@ -13,7 +13,7 @@ ARG OPENSEARCH_PLUGINS_INSTALL
 ARG OPENSEARCH_PLUGINS_REMOVE
 
 # renovate: datasource=github-releases depName=hairyhenderson/gomplate
-ENV GOMPLATE_VERSION="${GOMPLATE_VERSION:-v3.11.7}"
+ENV GOMPLATE_VERSION="${GOMPLATE_VERSION:-v4.1.0}"
 # renovate: datasource=github-releases depName=owncloud-ops/container-library
 ENV CONTAINER_LIBRARY_VERSION="${CONTAINER_LIBRARY_VERSION:-v0.1.0}"
 
